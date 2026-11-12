@@ -1,0 +1,15 @@
+# WICHTIG: PySide6 6.9.1 hatte einen bestaetigten Regressions-Bug
+# (AttributeError: autoRangeEnabled), der jedes Kurven-Zeichnen mit
+# pyqtgraph zum Absturz brachte. Fix kam mit 6.9.2.
+# Siehe: https://github.com/pyqtgraph/pyqtgraph/issues/3326
+# ZUSAETZLICH (unabhaengig von der PySide6-Version) gilt ein weiterer,
+# seit 2021 offener pyqtgraph-Bug: clipToView=True darf NICHT als
+# Konstruktor-Kwarg von PlotDataItem/PlotItem.plot() uebergeben werden,
+# sonst derselbe AttributeError. Siehe:
+# https://github.com/pyqtgraph/pyqtgraph/issues/1854
+# csv_viewer.py setzt clipToView deshalb immer erst nachtraeglich per
+# curve.setClipToView(True), nachdem die Kurve zum Plot hinzugefuegt wurde.
+PySide6>=6.9.2,!=6.9.1
+pyqtgraph>=0.13.7
+pandas
+numpy
