@@ -17,7 +17,7 @@ The viewer is fully decoupled from the BrainStem system: it neither imports the 
 The BrainStem admin GUI (`python main.py --gui`) has a logger row:
 
 - **Logger aktiv** (logger on): starts a new file `gui_log_YYYY-MM-DD_HHMMSS.csv` in the working directory the GUI was started from.
-- **Nur bei Aenderung loggen** (log on change only, default): a row is written only when a value has changed, plus a heartbeat row at least every 10 minutes.
+- **Nur bei Änderung loggen** (log on change only, default): a row is written only when a value has changed, plus a heartbeat row at least every 10 minutes.
 
 Each row holds a timestamp (`timestamp_iso`) and every value the GUI currently displays.
 
@@ -25,16 +25,20 @@ Each row holds a timestamp (`timestamp_iso`) and every value the GUI currently d
 
 ## Features
 
+- **Same look as the BrainStem admin GUI:** a calm dark color scheme by default and a light one for bright rooms, switched with **Farbschema: Dunkel / Hell** (color scheme: dark / light) in the header or the **Ansicht** (view) menu. The choice is remembered. Colors, cards and typography match the admin GUI (`ki_system/gui_theme.py`), and the twelve neuromodulators keep the same colors as in its bar display. On Windows 10 and 11 the title bar follows the color scheme.
 - **Automatic time axis:** the column `timestamp_iso` (or `timestamp`, `time`, `datetime`, `date`, or any column with "time" or "date" in its name) becomes the X axis. Without a time column, the row number is used. The axis shows the clock time exactly as written in the log.
 - **Automatic column grouping:** numeric columns are detected and sorted into topic groups (see below). True/false values (`True`/`False`, also German `wahr`/`falsch`) are plotted as 1 and 0. Pure text columns are not plotted.
-- **Per-curve toggles:** every curve has a checkbox; its color in the list serves as the legend. "Alle an" / "Alle aus" (all on / all off) buttons and a filter field help with long lists.
+- **Per-curve toggles:** every curve has a checkbox; the color swatch in front of its name serves as the legend. Each group shows how many of its curves are active (for example `2 / 12`). "Alle an" / "Alle aus" (all on / all off) act on the curves the filter field currently shows.
 - **Three display modes** (selector on the left):
   - **Eigene Achse je Kurve (one axis per curve):** every active curve gets its own, independently scaled Y axis on the right. Ideal when values such as `dopamine` (0 to 1) and `chunks_total` (over 160,000) should be readable at the same time.
-  - **Ueberlagert, normalisiert (normalized overlay, 0 to 1):** all active curves are scaled to 0 to 1 and overlaid. Good for comparing shapes, for example adenosine against histamine.
+  - **Überlagert, normalisiert (normalized overlay, 0 to 1):** all active curves are scaled to 0 to 1 and overlaid; the legend shows the original range of each curve. Good for comparing shapes, for example adenosine against histamine.
   - **Original (shared axis):** all curves in their original values on one axis; useful for similar value ranges.
-- **Crosshair with value readout:** shows the time and the original values of all active curves at the cursor, independent of the display mode.
+- **Legend and value readout beside the plot:** a column to the right of the plot lists every active curve with its color and, while the mouse is over the plot, the time and the original value of each curve at the crosshair, independent of the display mode. Nothing is drawn on top of the curves. Large whole numbers are grouped (`162 400`).
+- **File overview:** the "Datei" (file) card shows the file name, rows, columns, plottable curves and the time span of the log.
+- **Ansicht anpassen** (fit view, Ctrl+0) resets all axes to the full data range after zooming. Constant curves such as `chunks_total` get a small value range instead of an axis that repeats one number.
+- **Drag and drop:** a CSV file dragged onto the window is opened.
 - **Built for long logs:** curves are downsampled automatically and only the visible range is drawn, so logs with many thousands of rows stay responsive.
-- **"Datei" (file) menu:** open CSV, reload and quit. Reload keeps the selected curves and the display mode, so it can be used to follow a log that the BrainStem logger is still writing. An incomplete last line is skipped.
+- **"Datei" (file) menu:** open CSV (Ctrl+O), reload (F5) and quit (Ctrl+Q). Reload keeps the selected curves and the display mode, so it can be used to follow a log that the BrainStem logger is still writing. An incomplete last line is skipped.
 - **Robust against messy data:** empty cells and placeholders such as `n/a` appear as gaps in the curve without making the whole column unusable. Rows out of time order (for example concatenated logs) are sorted by time.
 
 The user interface labels are in German, matching the BrainStem admin GUI.
@@ -47,7 +51,7 @@ The user interface labels are in German, matching the BrainStem admin GUI.
 |---|---|
 | **Botenstoffe** (neuromodulators) | `dopamine`, `serotonin`, `glutamate`, `gaba`, `noradrenaline`, `acetylcholine`, `adenosine`, `endocannabinoid`, `cortisol`, `histamine`, `orexin`, `bdnf` |
 | **Regime / Zustand** (regime / state) | `sleep_active`, `sleep_dwell_cycles`, `sleep_upper_threshold`, `sleep_lower_threshold`, `sleep_pressure_position`, `developmental_maturity`, `auto_running` |
-| **Fortschritt / Zaehler** (progress / counters) | `chunks_covered`, `chunks_total`, `chunks_pct`, `hypotheses_total`, `facts`, `relations`, `ontology`, `questions`, `phase7d_survivors`, `phase7d_participated`, `phase7d_weakened`, `phase7d_threshold` |
+| **Fortschritt / Zähler** (progress / counters) | `chunks_covered`, `chunks_total`, `chunks_pct`, `hypotheses_total`, `facts`, `relations`, `ontology`, `questions`, `phase7d_survivors`, `phase7d_participated`, `phase7d_weakened`, `phase7d_threshold` |
 | **Sonstige** (other) | all remaining plottable columns, collapsed |
 
 Meaning of the sleep columns (BrainStem has a single sleep/wake switch):
